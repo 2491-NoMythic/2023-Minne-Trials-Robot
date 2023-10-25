@@ -11,6 +11,11 @@ import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.SparkSystem;
+import frc.robot.commands.DoSparkSystem;
+import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import frc.robot.commands.DoSparkSystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -21,12 +26,13 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
 
   private final Drivetrain m_Drivetrain = new Drivetrain();
+  private final SparkSystem m_SparkSystem = new SparkSystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final Joystick m_driverController =
 
       new Joystick(OperatorConstants.kDriverControllerPort);
-
+  private final PS4Controller opController = new PS4Controller(OperatorConstants.kOpControllerPort);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
@@ -46,9 +52,9 @@ public class RobotContainer {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
     //new Trigger;
+    new Trigger(opController::getL1Button).whileTrue(new DoSparkSystem(m_SparkSystem));
+  
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
 
 
 m_Drivetrain.setDefaultCommand(new DriveRobot(m_Drivetrain, m_driverController));
