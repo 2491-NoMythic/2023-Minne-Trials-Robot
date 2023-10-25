@@ -20,6 +20,7 @@ public Drivetrain() {
     m_leftDrive = new WPI_TalonFX(1);
     m_rightDrive = new WPI_TalonFX(2);
     m_robotDrive = new DifferentialDrive(m_leftDrive, m_rightDrive);
+    m_rightDrive.setInverted(true);
     m_rightDrive.setNeutralMode(NeutralMode.Brake);
     m_leftDrive.setNeutralMode(NeutralMode.Brake); 
   } 
