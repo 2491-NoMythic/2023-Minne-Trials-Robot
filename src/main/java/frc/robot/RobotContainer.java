@@ -6,8 +6,13 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.DriveRobot;
+import frc.robot.commands.Intake;
+import frc.robot.commands.Scoring;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.IntakeThing;
+import frc.robot.subsystems.ScoringThing;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -20,10 +25,17 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivetrain m_Drivetrain = new Drivetrain();
+  private final IntakeThing m_IntakeThing = new IntakeThing();
+  private final ScoringThing m_ScoringThing = new ScoringThing();
+
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final Joystick m_driverController =
       new Joystick(OperatorConstants.kDriverControllerPort);
+  private final PS4Controller m_operatorController = 
+      new PS4Controller(OperatorConstants.kCoDriverControllerPort);
+
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -42,7 +54,10 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-m_Drivetrain.setDefaultCommand(new DriveRobot(m_Drivetrain, m_driverController));
+    m_Drivetrain.setDefaultCommand(new DriveRobot(m_Drivetrain, m_driverController));
+    m_IntakeThing.setDefaultCommand(new Intake(m_IntakeThing, m_operatorController));
+    m_ScoringThing.setDefaultCommand(new Scoring(m_ScoringThing, m_operatorController));
+
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
   }

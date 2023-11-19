@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -29,11 +31,12 @@ public Drivetrain() {
     m_robotDrive = new DifferentialDrive(m_leftDrive, m_rightDrive);
     m_rightDrive.setNeutralMode(NeutralMode.Brake);
     m_leftDrive.setNeutralMode(NeutralMode.Brake); 
+    Gyro.setYaw(0);
     
   } 
 public double getYaw()
 {
- return Gyro.getYaw();
+ return Gyro.getYaw() %360;
 }
 
 
@@ -44,7 +47,7 @@ public double getYaw()
   }
   @Override
   public void periodic() {
-    System.out.println(getYaw());
+    SmartDashboard.putNumber("get Yaw", getYaw());
     // This method will be called once per scheduler run
   }
 }
