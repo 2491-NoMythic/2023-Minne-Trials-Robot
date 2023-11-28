@@ -1,11 +1,11 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Escelator;
+import frc.robot.subsystems.Escalator;
 
-public class RunEscelator extends CommandBase{
-    private final Escelator m_SparkSystem;
-    public RunEscelator(Escelator sparkSystem){
+public class RunEscalator extends CommandBase{
+    private final Escalator m_SparkSystem;
+    public RunEscalator(Escalator sparkSystem){
         m_SparkSystem = sparkSystem;
         addRequirements(sparkSystem);
     }
