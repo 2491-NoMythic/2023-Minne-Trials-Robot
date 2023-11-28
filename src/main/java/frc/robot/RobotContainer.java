@@ -11,11 +11,11 @@ import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.subsystems.SparkSystem;
-import frc.robot.commands.DoSparkSystem;
+import frc.robot.subsystems.Escelator;
+import frc.robot.commands.RunEscelator;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
-import frc.robot.commands.DoSparkSystem;
+import frc.robot.commands.RunEscelator;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -26,7 +26,7 @@ import frc.robot.commands.DoSparkSystem;
 public class RobotContainer {
 
   private final Drivetrain m_Drivetrain = new Drivetrain();
-  private final SparkSystem m_SparkSystem = new SparkSystem();
+  private final Escelator m_SparkSystem = new Escelator();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final Joystick m_driverController =
@@ -52,7 +52,7 @@ public class RobotContainer {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
     //new Trigger;
-    new Trigger(opController::getL1Button).whileTrue(new DoSparkSystem(m_SparkSystem));
+    new Trigger(opController::getL1Button).whileTrue(new RunEscelator(m_SparkSystem));
   
 
 
