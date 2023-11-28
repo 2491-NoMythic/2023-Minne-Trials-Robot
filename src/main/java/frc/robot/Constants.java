@@ -17,4 +17,7 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
     public static final int kOpControllerPort = 1;
   }
+  public static class EscalatorConstants{
+    public static final int escalatorMotor = 2491; 
+  }
 }
