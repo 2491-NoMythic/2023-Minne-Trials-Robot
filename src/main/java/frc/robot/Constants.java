@@ -13,7 +13,9 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static final int pigoenid = 3; 
+  public static final int pigoenid = 3;
+  public static final double TicksToMeeters = 1*(1/2048)*(1/100)*(4*Math.PI)*(1/39.37);
+  public static final double Dead = .3;
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
     public static final int kCoDriverControllerPort = 1;

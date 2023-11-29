@@ -16,6 +16,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
+
 import frc.robot.Constants;
 import frc.robot.Constants.*;
 
@@ -24,7 +25,7 @@ public class Drivetrain extends SubsystemBase {
     private final WPI_TalonFX m_leftDrive;
     private final WPI_TalonFX m_rightDrive;
     private final DifferentialDrive m_robotDrive;
-    //private final DifferentialDriveOdometry m_Odometry;
+    private final DifferentialDriveOdometry m_Odometry;
 
     TalonSRX PigeonController = new TalonSRX(Constants.pigoenid);
     private final PigeonIMU Gyro = new PigeonIMU(PigeonController);
@@ -36,37 +37,45 @@ public class Drivetrain extends SubsystemBase {
         m_robotDrive = new DifferentialDrive(m_leftDrive, m_rightDrive);
         m_rightDrive.setNeutralMode(NeutralMode.Brake);
         m_leftDrive.setNeutralMode(NeutralMode.Brake);
+        //FIX FIX FIX
+        m_Odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getYaw()), getLeftEncoderDistanceMeters(), getRightEncoderDistanceMeters(), new Pose2d());
         // m_Odometry = new m_Odometry();
         Gyro.setYaw(0);
 
     }
 
-    //public Pose2d getPose() {
-        //return m_Odometry.getPoseMeters();
+    public Pose2d getPose() {
+        return m_Odometry.getPoseMeters();
+    }
 
-    //public void resetEncoders
+    public void resetEncoders()
+    {
+
+    }
 
     
 
-   // public void resetOdometry(Pose2d pose) {
-       // resetEncoders();
-       // m_Odometry.resetPosition(Rotation2d.fromDegrees(getYaw()), getLeftEncoderDistanceMeters(), getRightEncoderDistanceMeters(),
-         //       pose);
-    //}
+   public void resetOdometry(Pose2d pose) {
+        resetEncoders();
+       m_Odometry.resetPosition(Rotation2d.fromDegrees(getYaw()), getLeftEncoderDistanceMeters(), getRightEncoderDistanceMeters(),
+                pose);
+    }
 
-    //public void updateOdometry() {
-        
-    //}
 
-    //public double getLeftEncoderDistanceMeters()
-    //{
-      //  m_leftDrive.getSelectedSensorPosition(0);
-    //}
+	public void updateOdometry() {
+		// odometry.updateWithTime(Timer.getFPGATimestamp(), getGyroscopeRotation());
+		m_Odometry.update(Rotation2d.fromDegrees(getYaw()), getLeftEncoderDistanceMeters(), getRightEncoderDistanceMeters());
+	}
 
-    //public double getRightEncoderDistanceMeters()
-    //{
-      //  m_rightDrive.getSelectedSensorPosition(0);
-    //}
+    public double getLeftEncoderDistanceMeters()
+    {
+      return m_leftDrive.getSelectedSensorPosition(0)* Constants.TicksToMeeters;
+    }
+
+    public double getRightEncoderDistanceMeters()
+    {
+      return (m_rightDrive.getSelectedSensorPosition(0) * Constants.TicksToMeeters);
+    }
 
 
     public double getYaw() {
@@ -80,6 +89,7 @@ public class Drivetrain extends SubsystemBase {
     @Override
     public void periodic() {
         SmartDashboard.putNumber("get Yaw", getYaw());
+        updateOdometry();
         // This method will be called once per scheduler run
     }
 }

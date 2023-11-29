@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.Constants;
 import frc.robot.subsystems.IntakeThing;
 import edu.wpi.first.wpilibj.PS4Controller;
 
@@ -30,7 +31,7 @@ public class Intake extends CommandBase {
     @Override
     public void execute() {
         if(m_intakeTrigger.getR1Button()) {
-            m_intakeMotor.runIntake(-0.7);
+            m_intakeMotor.runIntake(-1);
         } else {
         if(m_intakeTrigger.getR2Button()) {
             m_intakeMotor.runIntake(-0.2);
@@ -42,6 +43,12 @@ public class Intake extends CommandBase {
             m_intakeMotor.runIntake(.3);
         ;  
         }}}}
+        double throttle = m_intakeTrigger.getLeftY();
+       if (Math.abs(throttle) < Constants.Dead)
+                throttle = 0;
+        else 
+            throttle = Math.signum(throttle) * (Math.abs(throttle) - Constants.Dead) / (1-Constants.Dead);
+        m_intakeMotor.runIntake(throttle);
     }
     @Override
     public void end(boolean interrupted) {
