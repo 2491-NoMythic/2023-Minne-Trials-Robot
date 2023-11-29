@@ -40,7 +40,7 @@ public class Intake extends CommandBase {
             m_intakeMotor.runIntake(0);
         } else {
         if(m_intakeTrigger.getL1Button()) {
-            m_intakeMotor.runIntake(.3);
+            m_intakeMotor.runIntake(.35);
         ;  
         }}}}
         double throttle = m_intakeTrigger.getLeftY();
@@ -48,7 +48,7 @@ public class Intake extends CommandBase {
                 throttle = 0;
         else 
             throttle = Math.signum(throttle) * (Math.abs(throttle) - Constants.Dead) / (1-Constants.Dead);
-        m_intakeMotor.runIntake(throttle);
+        m_intakeMotor.runIntake(throttle * .6);
     }
     @Override
     public void end(boolean interrupted) {
