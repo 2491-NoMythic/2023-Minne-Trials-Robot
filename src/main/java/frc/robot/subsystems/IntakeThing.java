@@ -5,7 +5,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-
 public class IntakeThing extends SubsystemBase {
     private final WPI_TalonSRX m_intakeMotor;
 
@@ -19,4 +18,4 @@ public class IntakeThing extends SubsystemBase {
         m_intakeMotor.set(speed);
     }
 
-    }
+}
