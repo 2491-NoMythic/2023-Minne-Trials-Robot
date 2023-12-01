@@ -7,11 +7,12 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.DriveRobot;
+import frc.robot.commands.EmergAuto;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-
+import frc.robot.commands.EmergAuto;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -63,8 +64,8 @@ m_Drivetrain.setDefaultCommand(new DriveRobot(m_Drivetrain, m_driverController))
    
     //@return the command to run in autonomous
     public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return null;
+
+     return new EmergAuto(m_Drivetrain);
   }
 
   }
