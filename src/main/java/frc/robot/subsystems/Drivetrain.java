@@ -11,14 +11,21 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import java.sql.Time;
+import java.util.Random;
+
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.PigeonIMU;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 
 import frc.robot.Constants;
-import frc.robot.Constants.*;
+
 
 public class Drivetrain extends SubsystemBase {
     /** Creates a new Drivetrain. */
@@ -27,8 +34,11 @@ public class Drivetrain extends SubsystemBase {
     private final DifferentialDrive m_robotDrive;
     private final DifferentialDriveOdometry m_Odometry;
 
-    TalonSRX PigeonController = new TalonSRX(Constants.pigoenid);
-    private final PigeonIMU Gyro = new PigeonIMU(PigeonController);
+  TalonSRX PigeonController = new TalonSRX(Constants.pigoenid);
+  private final PigeonIMU Gyro = new PigeonIMU (PigeonController);
+
+  private final Field2d m_field = new Field2d();
+
 
 
     public Drivetrain() {
@@ -37,11 +47,18 @@ public class Drivetrain extends SubsystemBase {
         m_robotDrive = new DifferentialDrive(m_leftDrive, m_rightDrive);
         m_rightDrive.setNeutralMode(NeutralMode.Brake);
         m_leftDrive.setNeutralMode(NeutralMode.Brake);
+
+        m_leftDrive.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+        m_rightDrive.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
         //FIX FIX FIX
         m_Odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getYaw()), getLeftEncoderDistanceMeters(), getRightEncoderDistanceMeters(), new Pose2d());
         // m_Odometry = new m_Odometry();
         Gyro.setYaw(0);
+        SmartDashboard.putData("Field", m_field);
 
+        resetOdometry(getPose());
+
+       
     }
 
     public Pose2d getPose() {
@@ -50,7 +67,8 @@ public class Drivetrain extends SubsystemBase {
 
     public void resetEncoders()
     {
-
+        m_rightDrive.setSelectedSensorPosition(0);
+        m_leftDrive.setSelectedSensorPosition(0);
     }
 
     
@@ -64,17 +82,19 @@ public class Drivetrain extends SubsystemBase {
 
 	public void updateOdometry() {
 		// odometry.updateWithTime(Timer.getFPGATimestamp(), getGyroscopeRotation());
-		m_Odometry.update(Rotation2d.fromDegrees(getYaw()), getLeftEncoderDistanceMeters(), getRightEncoderDistanceMeters());
+		m_Odometry.update(Rotation2d.fromDegrees(getYaw()), getLeftEncoderDistanceMeters() , getRightEncoderDistanceMeters() * -1);
 	}
 
     public double getLeftEncoderDistanceMeters()
     {
-      return m_leftDrive.getSelectedSensorPosition(0)* Constants.TicksToMeeters;
+     // System.out.print(m_leftDrive.getSelectedSensorPosition());
+      //return()
+      return (m_leftDrive.getSelectedSensorPosition() * Constants.TicksToMeeters);
     }
 
     public double getRightEncoderDistanceMeters()
     {
-      return (m_rightDrive.getSelectedSensorPosition(0) * Constants.TicksToMeeters);
+      return (m_rightDrive.getSelectedSensorPosition() * Constants.TicksToMeeters);
     }
 
 
@@ -88,9 +108,17 @@ public class Drivetrain extends SubsystemBase {
 
     @Override
     public void periodic() {
+      updateOdometry();
         SmartDashboard.putNumber("get Yaw", getYaw());
-        updateOdometry();
+        m_field.setRobotPose(m_Odometry.getPoseMeters());
+       
+        SmartDashboard.putNumber("Left encoder", getLeftEncoderDistanceMeters());
+        SmartDashboard.putNumber("Right encoder", getRightEncoderDistanceMeters());
+        SmartDashboard.putNumber("X", m_Odometry.getPoseMeters().getX());
+        SmartDashboard.putNumber("Y", m_Odometry.getPoseMeters().getY());
+       
         // This method will be called once per scheduler run
     }
 }
+
 

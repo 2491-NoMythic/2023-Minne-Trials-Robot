@@ -14,7 +14,7 @@ package frc.robot;
  */
 public final class Constants {
   public static final int pigoenid = 3;
-  public static final double TicksToMeeters = 1*(1/2048)*(1/100)*(4*Math.PI)*(1/39.37);
+  public static final double TicksToMeeters = (1.0/2048.0)*(1.0/10.75)*(4.0*Math.PI)*(1.0/39.37);
   public static final double Dead = .3;
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
