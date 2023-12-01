@@ -31,27 +31,30 @@ public class Intake extends CommandBase {
     @Override
     public void execute() {
         double throttle = m_intakeTrigger.getLeftY();
-       if (Math.abs(throttle) < Constants.Dead)
-                throttle = 0;
-        else 
-            throttle = Math.signum(throttle) * (Math.abs(throttle) - Constants.Dead) / (1-Constants.Dead);
-        m_intakeMotor.runIntake(throttle * .6);
+        if (Math.abs(throttle) < Constants.Dead)
+            throttle = 0;
+        else
+            throttle = Math.signum(throttle) * (Math.abs(throttle) - Constants.Dead) / (1 - Constants.Dead);
+        m_intakeMotor.runIntake(throttle * .8);
 
-        if(m_intakeTrigger.getR1Button()) {
+        if (m_intakeTrigger.getR1Button()) {
             m_intakeMotor.runIntake(-1);
         } else {
-        if(m_intakeTrigger.getR2Button()) {
-            m_intakeMotor.runIntake(-0.2);
-        } else {
-        if(m_intakeTrigger.getL2Button() || m_intakeTrigger.getL2Button()) {
-            m_intakeMotor.runIntake(0);
-        } else {
-        if(m_intakeTrigger.getL1Button()) {
-            m_intakeMotor.runIntake(.35);
-        ;  
-        }}}}
-    
+            if (m_intakeTrigger.getR2Button()) {
+                m_intakeMotor.runIntake(-0.2);
+            } else {
+                if (m_intakeTrigger.getL2Button() || m_intakeTrigger.getL2Button()) {
+                    m_intakeMotor.runIntake(0);
+                } else {
+                    if (m_intakeTrigger.getL1Button()) {
+                        m_intakeMotor.runIntake(.35);
+                        ;
+                    }
+                }
+            }
+        }
     }
+
     @Override
     public void end(boolean interrupted) {
         m_intakeMotor.runIntake(0);
