@@ -77,6 +77,10 @@ public class RobotContainer {
     // cancelling on release.
   }
 
+  public Command getAutonomousCommand() {
+    return autoChooser.getSelected();
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
