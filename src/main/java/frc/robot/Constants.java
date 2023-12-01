@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -13,7 +15,15 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static final int pigoenid = 3;
+  public static final double TicksToMeeters = 1*(1/2048)*(1/100)*(4*Math.PI)*(1/39.37);
+  public static final double Dead = .3;
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kCoDriverControllerPort = 1;
   }
+public static final class DriveTrainConstants {
+  public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.66; //distance between the center of the wheelson each side
+  public static final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(DRIVETRAIN_TRACKWIDTH_METERS);
+}
 }
