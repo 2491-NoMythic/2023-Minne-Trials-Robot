@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
@@ -16,15 +17,26 @@ import java.sql.Time;
 import java.util.Random;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+
+import java.util.function.Supplier;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import static frc.robot.Constants.DriveTrainConstants.*;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
 
 import frc.robot.Constants;
+import frc.robot.Constants.DriveTrainConstants;
+
 
 
 public class Drivetrain extends SubsystemBase {
@@ -34,10 +46,10 @@ public class Drivetrain extends SubsystemBase {
     private final DifferentialDrive m_robotDrive;
     private final DifferentialDriveOdometry m_Odometry;
 
-  TalonSRX PigeonController = new TalonSRX(Constants.pigoenid);
-  private final PigeonIMU Gyro = new PigeonIMU (PigeonController);
-
-  private final Field2d m_field = new Field2d();
+    TalonSRX PigeonController = new TalonSRX(Constants.pigoenid);
+    private final PigeonIMU Gyro = new PigeonIMU(PigeonController);
+    public DifferentialDriveKinematics kinematics = DriveTrainConstants.kinematics;
+    private final Field2d m_field = new Field2d();
 
 
 
@@ -71,7 +83,7 @@ public class Drivetrain extends SubsystemBase {
         m_leftDrive.setSelectedSensorPosition(0);
     }
 
-    
+
 
    public void resetOdometry(Pose2d pose) {
         resetEncoders();
@@ -97,6 +109,9 @@ public class Drivetrain extends SubsystemBase {
       return (m_rightDrive.getSelectedSensorPosition() * Constants.TicksToMeeters);
     }
 
+    public void displayFieldTrajectory(PathPlannerTrajectory traj) {
+        m_field.getObject("traj").setTrajectory(traj);
+    }
 
     public double getYaw() {
         return Gyro.getYaw() % 360;
@@ -104,6 +119,14 @@ public class Drivetrain extends SubsystemBase {
 
     public void drive(double xSpeed, double zRotation) {
         m_robotDrive.arcadeDrive(xSpeed, zRotation);
+    }
+
+    public void driveLR(double lspeed, double rspeed) {
+        m_robotDrive.tankDrive(lspeed, rspeed);
+    }
+
+    public void stop() {
+        m_robotDrive.tankDrive(0, 0);
     }
 
     @Override
