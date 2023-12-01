@@ -17,5 +17,13 @@ public class IntakeThing extends SubsystemBase {
     public void runIntake(double speed) {
         m_intakeMotor.set(speed);
     }
+    
+    public void stopIntake() {
+        m_intakeMotor.set(0);
+    }
+
+    public void runAtDefault() {
+        m_intakeMotor.set(0.8);
+    }
 
 }

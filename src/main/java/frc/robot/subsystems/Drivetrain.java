@@ -6,15 +6,24 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+
+import java.util.function.Supplier;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.PigeonIMU;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
 
 import frc.robot.Constants;
@@ -29,6 +38,9 @@ public class Drivetrain extends SubsystemBase {
 
     TalonSRX PigeonController = new TalonSRX(Constants.pigoenid);
     private final PigeonIMU Gyro = new PigeonIMU(PigeonController);
+    public DifferentialDriveKinematics kinematics = DriveTrainConstants.kinematics;
+    private final Field2d m_field = new Field2d();
+
 
 
     public Drivetrain() {
@@ -53,7 +65,7 @@ public class Drivetrain extends SubsystemBase {
 
     }
 
-    
+
 
    public void resetOdometry(Pose2d pose) {
         resetEncoders();
@@ -77,6 +89,9 @@ public class Drivetrain extends SubsystemBase {
       return (m_rightDrive.getSelectedSensorPosition(0) * Constants.TicksToMeeters);
     }
 
+    public void displayFieldTrajectory(PathPlannerTrajectory traj) {
+        m_field.getObject("traj").setTrajectory(traj);
+    }
 
     public double getYaw() {
         return Gyro.getYaw() % 360;
@@ -84,6 +99,14 @@ public class Drivetrain extends SubsystemBase {
 
     public void drive(double xSpeed, double zRotation) {
         m_robotDrive.arcadeDrive(xSpeed, zRotation);
+    }
+
+    public void driveLR(double lspeed, double rspeed) {
+        m_robotDrive.tankDrive(lspeed, rspeed);
+    }
+
+    public void stop() {
+        m_robotDrive.tankDrive(0, 0);
     }
 
     @Override
