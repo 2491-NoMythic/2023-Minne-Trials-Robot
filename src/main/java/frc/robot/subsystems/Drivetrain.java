@@ -103,7 +103,15 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void driveLR(double lspeed, double rspeed) {
-        m_robotDrive.tankDrive(lspeed, rspeed);
+        m_robotDrive.tankDrive(-lspeed, rspeed);
+        SmartDashboard.putNumber("Heading", getHeading());
+        SmartDashboard.putNumber("left power", lspeed);
+        SmartDashboard.putNumber("right power", rspeed);
+
+    }
+
+    public double getHeading() {
+        return m_Odometry.getPoseMeters().getRotation().getDegrees();
     }
 
     public void stop() {
