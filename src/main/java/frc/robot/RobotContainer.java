@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.DriveRobot;
 import frc.robot.commands.Intake;
 import frc.robot.subsystems.Drivetrain;
@@ -28,7 +29,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
+
   private final Drivetrain m_Drivetrain = new Drivetrain();
   private final IntakeThing m_IntakeThing = new IntakeThing();
 
@@ -39,6 +40,7 @@ public class RobotContainer {
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final Joystick m_driverController =
+
       new Joystick(OperatorConstants.kDriverControllerPort);
   private final PS4Controller m_operatorController = 
       new PS4Controller(OperatorConstants.kCoDriverControllerPort);
@@ -75,17 +77,12 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-  }
+        while (m_driverController.getTrigger()) {}
+      
+    }
 
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
   }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-    // An example command will be run in autonomous
-  }
-
+}
