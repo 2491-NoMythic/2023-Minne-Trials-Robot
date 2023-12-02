@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -75,6 +76,8 @@ public final class Autos {
       drivetrain);
     
     autoChooser.addOption("test1", test1());
+    autoChooser.addOption("backup auto", backupAuto());
+    autoChooser.addOption("backupAutoBetter", backupAutoBetter());
   //format for adding an Auto:
   //autoChooser.addOption("name that will appear on smartDashboard", nameOfMethodBelow);
   //then write this OUTSIDE of AutoInit:
@@ -88,9 +91,25 @@ public final class Autos {
   public SequentialCommandGroup test1() {
     return new SequentialCommandGroup(
       autoBuilder.fullAuto(MinneTrialstest1),
+      new InstantCommand(drivetrain::stop, drivetrain),
       new InstantCommand(intake::runAtDefault, intake)
     );
   }
 
-  static List<PathPlannerTrajectory> MinneTrialstest1 = PathPlanner.loadPathGroup("MinneTrialsTest1", new PathConstraints(2.5, 1.75));
+  public SequentialCommandGroup backupAuto() {
+    return new SequentialCommandGroup(
+      new InstantCommand(intake::runAtDefault, intake),
+      new InstantCommand(()->drivetrain.drive(0.3, 0), drivetrain),
+      new WaitCommand(2),
+      new InstantCommand(drivetrain::stop, drivetrain));
+  }
+
+  public SequentialCommandGroup backupAutoBetter() {
+    return new SequentialCommandGroup(
+      new InstantCommand(intake::runAtDefault, intake),
+      new DriveForwardMeters(drivetrain, 0.3, 1)
+      );
+  }
+
+  static List<PathPlannerTrajectory> MinneTrialstest1 = PathPlanner.loadPathGroup("MinneTrialsTest1", new PathConstraints(0.5, 1.75));
 }

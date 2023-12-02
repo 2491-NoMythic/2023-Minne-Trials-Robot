@@ -18,9 +18,12 @@ import frc.robot.subsystems.IntakeThing;
 
 import java.util.HashMap;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -56,14 +59,19 @@ public class RobotContainer {
     autoChooser = new SendableChooser<>();
     eventMap = new HashMap<>();
     // Configure the trigger bindings
+    m_Drivetrain.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)));
     configureBindings();
     autoInit();
+    SmartDashboard.putNumber("heading", 0);
   }
 
   private void autoInit() {
     autos = Autos.getInstance();
     eventMap.put("stop", new InstantCommand(m_Drivetrain::stop, m_Drivetrain));
     eventMap.put("run Intake", new InstantCommand(m_IntakeThing::runAtDefault, m_IntakeThing));
+    autos.autoInit(autoChooser, eventMap, m_Drivetrain, m_IntakeThing);
+    SmartDashboard.putData("autoChooser", autoChooser);
+    SmartDashboard.putBoolean("is autoInit running", true);
   }
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the

@@ -32,10 +32,12 @@ public class DriveRobot extends CommandBase {
     @Override
     public void execute() {
         double throttle = m_robotsJoystick.getThrottle();
+
         m_robotDrive.drive(m_robotsJoystick.getZ() * 0.50, m_robotsJoystick.getY() * (throttle + 1.3));
         SmartDashboard.putNumber("Throttle Value", m_robotsJoystick.getThrottle());
         SmartDashboard.putNumber("Joystick Input speed", m_robotsJoystick.getX());
         SmartDashboard.putNumber("Joystick Input Rotation", m_robotsJoystick.getZ());
+
     }
 
     // Called once the command ends or is interrupted.
