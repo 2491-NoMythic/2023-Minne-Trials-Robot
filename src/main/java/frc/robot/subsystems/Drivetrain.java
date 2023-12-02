@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import static frc.robot.Constants.DriveTrainConstants.*;
+import static frc.robot.Constants.*;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -57,6 +58,7 @@ public class Drivetrain extends SubsystemBase {
         m_leftDrive = new WPI_TalonFX(1);
         m_rightDrive = new WPI_TalonFX(2);
         m_robotDrive = new DifferentialDrive(m_leftDrive, m_rightDrive);
+        m_robotDrive.setSafetyEnabled(false);
         m_rightDrive.setNeutralMode(NeutralMode.Brake);
         m_leftDrive.setNeutralMode(NeutralMode.Brake);
 
@@ -113,6 +115,11 @@ public class Drivetrain extends SubsystemBase {
         m_field.getObject("traj").setTrajectory(traj);
     }
 
+    public void setMaxPowerOutput(double maxPowerOutput) {
+        m_leftDrive.configPeakOutputForward(maxPowerOutput);
+        m_rightDrive.configPeakOutputForward(maxPowerOutput);
+    }
+
     public double getYaw() {
         return Gyro.getYaw() % 360;
     }
@@ -142,8 +149,7 @@ public class Drivetrain extends SubsystemBase {
       updateOdometry();
         SmartDashboard.putNumber("get Yaw", getYaw());
         m_field.setRobotPose(m_Odometry.getPoseMeters());
-       
-        SmartDashboard.putNumber("Left encoder", getLeftEncoderDistanceMeters());
+        SmartDashboard.putNumber("Left speed", m_leftDrive.getSelectedSensorVelocity()*10*TicksToMeeters);        SmartDashboard.putNumber("Left encoder", getLeftEncoderDistanceMeters());
         SmartDashboard.putNumber("Right encoder", getRightEncoderDistanceMeters());
         SmartDashboard.putNumber("X", m_Odometry.getPoseMeters().getX());
         SmartDashboard.putNumber("Y", m_Odometry.getPoseMeters().getY());

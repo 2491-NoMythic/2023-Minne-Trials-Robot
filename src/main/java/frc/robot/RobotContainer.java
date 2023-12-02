@@ -63,6 +63,7 @@ public class RobotContainer {
     configureBindings();
     autoInit();
     SmartDashboard.putNumber("heading", 0);
+    SmartDashboard.putData(m_Drivetrain);
   }
 
   private void autoInit() {

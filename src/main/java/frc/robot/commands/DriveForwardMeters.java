@@ -14,6 +14,7 @@ public class DriveForwardMeters extends CommandBase {
   private double speed;
   private double ticksNeeded;
   private double meters;
+  private double startEncoderDist;
 
   /** Creates a new DriveForwardMeters. */
   public DriveForwardMeters(Drivetrain drivetrain, double speed, double meters) {
@@ -21,6 +22,7 @@ public class DriveForwardMeters extends CommandBase {
     this.drivetrain = drivetrain;
     this.speed = speed;
     this.meters = meters;
+    startEncoderDist = drivetrain.getRightEncoderDistanceMeters();
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -44,6 +46,6 @@ public class DriveForwardMeters extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (meters<=drivetrain.getRightEncoderDistanceMeters());
+    return (meters<=((startEncoderDist*TicksToMeeters)-drivetrain.getRightEncoderDistanceMeters()));
   }
 }

@@ -35,7 +35,7 @@ public class Intake extends CommandBase {
                 throttle = 0;
         else 
             throttle = Math.signum(throttle) * (Math.abs(throttle) - Constants.Dead) / (1-Constants.Dead);
-        m_intakeMotor.runIntake(throttle * .6);
+        m_intakeMotor.runIntake(throttle);
 
         if(m_intakeTrigger.getR1Button()) {
             m_intakeMotor.runIntake(-1);

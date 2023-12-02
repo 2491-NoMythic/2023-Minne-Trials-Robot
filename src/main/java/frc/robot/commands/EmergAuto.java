@@ -17,10 +17,10 @@ public class EmergAuto extends CommandBase{
     public void execute() {
         // Drive forward for 3 seconds (adjust the time as needed)
         if (Timer.getFPGATimestamp() - autonomousStartTime < 2.0) {
-        m_Drivetrain.drive(1, 0);    
+        m_Drivetrain.driveLR(0.5, 0.5);   
         } else {
             // Stop the motors after 3 seconds
-        m_Drivetrain.drive(0, 0);
+        m_Drivetrain.stop();
         }
     }
 }

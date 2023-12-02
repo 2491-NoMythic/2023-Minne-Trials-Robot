@@ -78,6 +78,7 @@ public final class Autos {
     autoChooser.addOption("test1", test1());
     autoChooser.addOption("backup auto", backupAuto());
     autoChooser.addOption("backupAutoBetter", backupAutoBetter());
+    autoChooser.addOption("AugiesBackup", new EmergAuto(drivetrain));
   //format for adding an Auto:
   //autoChooser.addOption("name that will appear on smartDashboard", nameOfMethodBelow);
   //then write this OUTSIDE of AutoInit:
@@ -98,15 +99,15 @@ public final class Autos {
 
   public SequentialCommandGroup backupAuto() {
     return new SequentialCommandGroup(
-      new InstantCommand(intake::runAtDefault, intake),
-      new InstantCommand(()->drivetrain.drive(0.3, 0), drivetrain),
-      new WaitCommand(2),
+      // new InstantCommand(intake::runAtDefault, intake),
+      new InstantCommand(()->drivetrain.driveLR(-0.6, -0.6), drivetrain),
+      new WaitCommand(2.775),
       new InstantCommand(drivetrain::stop, drivetrain));
   }
 
   public SequentialCommandGroup backupAutoBetter() {
     return new SequentialCommandGroup(
-      new InstantCommand(intake::runAtDefault, intake),
+      // new InstantCommand(intake::runAtDefault, intake),
       new DriveForwardMeters(drivetrain, 0.3, 1)
       );
   }

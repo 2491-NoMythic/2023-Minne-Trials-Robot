@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import static frc.robot.Constants.DriveTrainConstants.*;
 
 /** An example command that uses an example subsystem. */
 public class DriveRobot extends CommandBase {
@@ -26,6 +27,7 @@ public class DriveRobot extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+        m_robotDrive.setMaxPowerOutput(MAX_POWER_OUTPUT);
     }
 
     // Called every time the scheduler runs while the command is scheduled.

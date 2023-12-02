@@ -19,6 +19,8 @@ public final class Constants {
 
   public static final double TicksToMeeters = (1/2048)*(1/10.75)*(4*Math.PI)*(1/39.37);
   public static final double MetersToTicks = (1/TicksToMeeters);
+
+  public static final boolean USE_AUTO_FROM_DASHBOARD = false;
   
   public static final double Dead = .3;
   public static class OperatorConstants {
@@ -28,5 +30,6 @@ public final class Constants {
 public static final class DriveTrainConstants {
   public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.66; //distance between the center of the wheelson each side
   public static final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(DRIVETRAIN_TRACKWIDTH_METERS);
+  public static final double MAX_POWER_OUTPUT = 0.1;
 }
 }
