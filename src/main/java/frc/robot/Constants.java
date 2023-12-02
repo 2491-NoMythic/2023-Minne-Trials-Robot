@@ -28,5 +28,7 @@ public final class Constants {
 public static final class DriveTrainConstants {
   public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.66; //distance between the center of the wheelson each side
   public static final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(DRIVETRAIN_TRACKWIDTH_METERS);
+
+  public static final double VELOCITY_KP = 0.001;
 }
 }

@@ -16,12 +16,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.sql.Time;
 import java.util.Random;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 
 import java.util.function.Supplier;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.PigeonIMU;
@@ -29,6 +31,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import static frc.robot.Constants.DriveTrainConstants.*;
+import static frc.robot.Constants.*;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -62,6 +65,11 @@ public class Drivetrain extends SubsystemBase {
 
         m_leftDrive.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
         m_rightDrive.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+
+        m_leftDrive.config_kP(0, VELOCITY_KP,0);
+        m_rightDrive.config_kP(0, VELOCITY_KP,0);
+        m_leftDrive.set(TalonFXControlMode.Velocity, DRIVETRAIN_TRACKWIDTH_METERS);
+
         //FIX FIX FIX
         m_Odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getYaw()), getLeftEncoderDistanceMeters(), getRightEncoderDistanceMeters(), new Pose2d());
         // m_Odometry = new m_Odometry();
@@ -69,8 +77,6 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putData("Field", m_field);
 
         resetOdometry(getPose());
-
-       
     }
 
     public Pose2d getPose() {
@@ -119,6 +125,13 @@ public class Drivetrain extends SubsystemBase {
 
     public void drive(double xSpeed, double zRotation) {
         m_robotDrive.arcadeDrive(xSpeed, zRotation);
+    }
+
+    public void driveVelocity(double lspeed, double rspeed) {
+        lspeed = (lspeed*MetersToTicks)/10;
+        rspeed = (rspeed*MetersToTicks)/10;
+        m_leftDrive.set(ControlMode.Velocity, lspeed);
+        m_rightDrive.set(ControlMode.Velocity, rspeed);
     }
 
     public void driveLR(double lspeed, double rspeed) {
