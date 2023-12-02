@@ -41,7 +41,7 @@ public class Intake extends CommandBase {
             m_intakeMotor.runIntake(-1);
         } else {
         if(m_intakeTrigger.getR2Button()) {
-            m_intakeMotor.runIntake(-0.2);
+            m_intakeMotor.runIntake(-0.45);
         } else {
         if(m_intakeTrigger.getL2Button() || m_intakeTrigger.getL2Button()) {
             m_intakeMotor.runIntake(0);
